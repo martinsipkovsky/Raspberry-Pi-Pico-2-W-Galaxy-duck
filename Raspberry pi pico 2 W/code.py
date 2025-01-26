@@ -12,7 +12,7 @@ from adafruit_hid.keyboard_layout_win_cz import KeyboardLayout
 from adafruit_hid.keycode import Keycode
 
 AP_SSID = "Galaxy"
-AP_PASSWORD = "GeForceRTX3080"
+AP_PASSWORD = "123456789"
 
 class HIDClient():
     def __init__(self):
