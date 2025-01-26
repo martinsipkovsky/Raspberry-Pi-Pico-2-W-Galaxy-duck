@@ -9,7 +9,8 @@
             font-family: Arial, sans-serif;
             text-align: center;
             padding: 20px;
-            background-color: #f4f4f9;
+            background-color: #222831;
+            color: #f2f2f2;
         }
         button {
             font-size: 16px;
@@ -20,33 +21,76 @@
             background-color: #007bff;
             color: white;
             cursor: pointer;
+            width: 60%;
         }
         button:hover {
             background-color: #0056b3;
         }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
-    <h1>Control Panel</h1>
-    <p>Click the buttons below to send GET requests to the server.</p>
     
-    <button onclick="sendRequest('/action1')">Action 1</button>
-    <button onclick="sendRequest('/action2')">Action 2</button>
-    <button onclick="sendRequest('/action3')">Action 3</button>
+    <div class="container">
+        <h1>Control Panel</h1>
+    
+        <button onclick="sendRequest('/do?winr')">Win+R</button>
+        <button onclick="sendRequest('/do?ctrlaltdel')">CTRL+ALT+DEL</button>
+        <button onclick="sendRequest('/do?keycode=40')">Enter</button>
+        <button onclick="window.location.href='/keyboard'"><i>Keyboard</i></button>
+        
+        <h3>Send Keystrokes</h3>
+        <input type="text" id="keystrokesInput" placeholder="..." />
+        <br />
+        <button onclick="sendKeystrokes()">Send Keystrokes</button>
+        <button style="width: 30%;" onclick="document.getElementById('keystrokesInput').value = ''">Clear</button>
+    </div>
+    </br></br></br>
+    <footer style="margin-top: 20px; font-size: 12px; color: #666; text-align: center;">
+        <p>This project is licensed under the <a href="https://opensource.org/licenses/MIT" target="_blank" style="color: #007BFF; text-decoration: none;">MIT License</a>.</p>
+        <p>Feel free to use, modify, and distribute this code.</p>
+    </footer>
 
     <script>
         function sendRequest(endpoint) {
             fetch(endpoint)
                 .then(response => {
-                    if (response.ok) {
-                        alert(`Request to ${endpoint} succeeded!`);
-                    } else {
+                    if (!response.ok) {
                         alert(`Request to ${endpoint} failed: ${response.status}`);
                     }
                 })
                 .catch(error => {
                     alert(`Error: ${error.message}`);
                 });
+        }
+        
+        function sendKeystrokes() {
+            const userInput = document.getElementById("keystrokesInput").value;
+            if (userInput.trim() !== "") {
+                fetch(`/do?keystrokes=${encodeURIComponent(userInput)}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            alert("Failed to send keystrokes.");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        alert("An error occurred while sending keystrokes.");
+                    });
+            } else {
+                alert("Textfield empty!");
+            }
         }
     </script>
 </body>

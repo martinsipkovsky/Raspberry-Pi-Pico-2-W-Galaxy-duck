@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Keyboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+            background-color: #222831;
+        }
+        .keyboard {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 5px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: #f2f2f2;
+        }
+        
+        button {
+            padding: 15px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background: #f0f0f0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #ddd;
+        }
+        
+        .backbutton {
+            font-size: 16px;
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        
+    </style>
+    <script>
+        function sendKeycode(keycode) {
+            fetch(`/do?keycode=${keycode}`)
+                .then(response => {
+                    if (response.ok) {
+                        console.log(`Sent keycode: ${keycode}`);
+                    } else {
+                        console.error(`Failed to send keycode: ${keycode}`);
+                    }
+                })
+                .catch(error => console.error(`Error: ${error}`));
+        }
+    </script>
+</head>
+<body>
+    <h1>Virtual Keyboard</h1>
+    <div class="keyboard">
+        <!-- Letters -->
+        <button onclick="sendKeycode(4)">A</button>
+        <button onclick="sendKeycode(5)">B</button>
+        <button onclick="sendKeycode(6)">C</button>
+        <button onclick="sendKeycode(7)">D</button>
+        <button onclick="sendKeycode(8)">E</button>
+        <button onclick="sendKeycode(9)">F</button>
+        <button onclick="sendKeycode(10)">G</button>
+        <button onclick="sendKeycode(11)">H</button>
+        <button onclick="sendKeycode(12)">I</button>
+        <button onclick="sendKeycode(13)">J</button>
+        <button onclick="sendKeycode(14)">K</button>
+        <button onclick="sendKeycode(15)">L</button>
+        <button onclick="sendKeycode(16)">M</button>
+        <button onclick="sendKeycode(17)">N</button>
+        <button onclick="sendKeycode(18)">O</button>
+        <button onclick="sendKeycode(19)">P</button>
+        <button onclick="sendKeycode(20)">Q</button>
+        <button onclick="sendKeycode(21)">R</button>
+        <button onclick="sendKeycode(22)">S</button>
+        <button onclick="sendKeycode(23)">T</button>
+        <button onclick="sendKeycode(24)">U</button>
+        <button onclick="sendKeycode(25)">V</button>
+        <button onclick="sendKeycode(26)">W</button>
+        <button onclick="sendKeycode(27)">X</button>
+        <button onclick="sendKeycode(29)">Y</button>
+        <button onclick="sendKeycode(28)">Z</button>
+
+        <!-- Special keys -->
+        <button onclick="sendKeycode(44)">SPACE</button>
+        <button onclick="sendKeycode(40)">ENTER</button>
+        <button onclick="sendKeycode(42)">BACKSPACE</button>
+        <button onclick="sendKeycode(43)">TAB</button>
+        <button onclick="sendKeycode(57)">CAPS LOCK</button>
+        <button onclick="sendKeycode(226)">ALT</button>
+        <button onclick="sendKeycode(224)">CONTROL</button>
+        <button onclick="sendKeycode(227)">COMMAND</button>
+        <button onclick="sendKeycode(80)">LEFT ARROW</button>
+        <button onclick="sendKeycode(79)">RIGHT ARROW</button>
+        <button onclick="sendKeycode(82)">UP ARROW</button>
+        <button onclick="sendKeycode(81)">DOWN ARROW</button>
+        
+        <button onclick="sendKeycode(58)">F1</button>
+        <button onclick="sendKeycode(59)">F2</button>
+        <button onclick="sendKeycode(60)">F3</button>
+        <button onclick="sendKeycode(61)">F4</button>
+        <button onclick="sendKeycode(62)">F5</button>
+        <button onclick="sendKeycode(63)">F6</button>
+        <button onclick="sendKeycode(64)">F7</button>
+        <button onclick="sendKeycode(65)">F8</button>
+        <button onclick="sendKeycode(66)">F9</button>
+        <button onclick="sendKeycode(67)">F10</button>
+        <button onclick="sendKeycode(68)">F11</button>
+        <button onclick="sendKeycode(69)">F12</button>
+    </div>
+    
+    <button class="backbutton" onclick="window.location.href='/'">Back</button>
+</body>
+</html>
