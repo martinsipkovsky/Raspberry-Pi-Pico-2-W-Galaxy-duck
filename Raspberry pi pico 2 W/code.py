@@ -3,7 +3,7 @@ import wifi
 import microcontroller
 import time
 
-from adafruit_httpserver import Server, Request, Response, JSONResponse
+from adafruit_httpserver import Server, Request, Response, JSONResponse, FileResponse
 
 import usb_hid
 from adafruit_hid.mouse import Mouse
@@ -38,6 +38,17 @@ class HIDClient():
         time.sleep(0.2)
         self.keyboard.release(227)
         self.keyboard.release(21)
+    
+    def ctrlaltdel(self):
+        self.keyboard.press(224) # ctrl key
+        time.sleep(0.2)
+        self.keyboard.press(226) # alt key
+        time.sleep(0.2)
+        self.keyboard.press(76) # del key
+        time.sleep(0.2)
+        self.keyboard.release(224)
+        self.keyboard.release(226)
+        self.keyboard.release(76)
 
 hid = HIDClient()
 
@@ -48,12 +59,15 @@ print(f"Created access point {AP_SSID}")
 pool = socketpool.SocketPool(wifi.radio)
 server = Server(pool, "/static", debug=True)
 
+HTML_FILE_PATH = "/index.html"
+KEYBOARD_FILE_PATH = "/keyboard.html"
+
 @server.route("/")
 def base(request: Request):
-    """
-    Serve a default static plain text message.
-    """
-    return Response(request, "Hello from the CircuitPython HTTP Server!")
+    try:
+        return FileResponse(request, HTML_FILE_PATH, content_type="text/html")
+    except OSError:
+        return Response(request, "Error: File not found!", content_type="text/plain", status=404)
 
 @server.route("/cpu-information", append_slash=True)
 def cpu_information_handler(request: Request):
@@ -80,10 +94,18 @@ def do(request: Request):
             t = float(int(request.query_params["sleep"])/1000)
             print(f"sleeping for {t}s.")
             time.sleep(t)
+        elif param.lower() == "ctrlaltdel":
+            hid.ctrlaltdel()
 
     
     return Response(request, "200")
 
+@server.route("/keyboard")
+def kboard(request: Request):
+    try:
+        return FileResponse(request, KEYBOARD_FILE_PATH, content_type="text/html")
+    except OSError:
+        return Response(request, "Error: File not found!", content_type="text/plain", status=404)
 
 # Použijte dostupnou IP adresu nebo výchozí IP pro AP
 ap_ip = wifi.radio.ipv4_address_ap or "192.168.4.1"
